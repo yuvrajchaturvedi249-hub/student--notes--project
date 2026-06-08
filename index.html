@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyShare Pro - Real Auth & Admin</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: #111827;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #374151;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: bold;
+      color: #60a5fa;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: #60a5fa;
+    }
+
+    .nav-buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .login-btn {
+      background: white;
+      color: black;
+    }
+
+    .signup-btn {
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+    }
+
+    .hero h1 {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      color: #cbd5e1;
+      max-width: 700px;
+      margin: auto;
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    .hero-buttons {
+      margin-top: 40px;
+    }
+
+    .hero-buttons button {
+      padding: 15px 30px;
+      border-radius: 12px;
+      border: none;
+      margin: 10px;
+      font-size: 17px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .primary-btn {
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+    }
+
+    .secondary-btn {
+      background: white;
+      color: black;
+    }
+
+    .search-section {
+      padding: 40px 60px;
+    }
+
+    .search-box {
+      background: #111827;
+      padding: 30px;
+      border-radius: 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      border: 1px solid #374151;
+    }
+
+    .search-box input,
+    .search-box select {
+      flex: 1;
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      background: #1f2937;
+      color: white;
+    }
+
+    .search-box button {
+      padding: 15px 25px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .section-title {
+      padding: 40px 60px 20px;
+      font-size: 40px;
+    }
+
+    .notes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 20px 60px 60px;
+    }
+
+    .note-card {
+      background: #111827;
+      padding: 20px;
+      border-radius: 20px;
+      border: 1px solid #374151;
+      transition: 0.3s;
+    }
+
+    .note-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .pdf-preview {
+      height: 180px;
+      background: #1f2937;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: #60a5fa;
+      font-size: 20px;
+      font-weight: bold;
+      gap: 10px;
+      border: 1px dashed #4b5563;
+    }
+
+    .file-meta-text {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: normal;
+      padding: 0 10px;
+      text-align: center;
+    }
+
+    .note-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .note-card p {
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    .card-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .card-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .view-btn {
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    .upload-section {
+      padding: 60px;
+    }
+
+    .upload-container {
+      background: #111827;
+      padding: 40px;
+      border-radius: 25px;
+      border: 1px solid #374151;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .upload-form h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .upload-form input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: none;
+      background: #1f2937;
+      color: white;
+    }
+
+    .file-upload-wrapper {
+      margin-top: 20px;
+      position: relative;
+      background: #1f2937;
+      border: 2px dashed #4b5563;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .file-upload-wrapper:hover {
+      border-color: #60a5fa;
+      background: #252f41;
+    }
+
+    .file-upload-wrapper input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-upload-wrapper p {
+      color: #94a3b8;
+      font-size: 15px;
+      margin-top: 8px;
+    }
+
+    .file-upload-wrapper .icon {
+      font-size: 35px;
+      color: #60a5fa;
+    }
+
+    .upload-form button.submit-upload-btn {
+      width: 100%;
+      margin-top: 25px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .auth-modal {
+      background: #111827;
+      border: 1px solid #374151;
+      padding: 40px;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      transform: scale(0.9);
+      transition: 0.3s ease;
+    }
+
+    .modal-overlay.active .auth-modal {
+      transform: scale(1);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .close-modal:hover {
+      color: white;
+    }
+
+    .auth-modal h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .auth-modal p {
+      color: #94a3b8;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    .auth-modal input {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid #374151;
+      background: #1f2937;
+      color: white;
+      font-size: 16px;
+    }
+
+    .auth-modal button.submit-auth {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .subscription-section {
+      padding: 60px;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .plan-card {
+      background: #111827;
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid #374151;
+      text-align: center;
+    }
+
+    .plan-card h2 {
+      margin-bottom: 20px;
+    }
+
+    .price {
+      font-size: 45px;
+      margin-bottom: 20px;
+      color: #60a5fa;
+    }
+
+    .plan-card ul {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+
+    .plan-card li {
+      margin: 12px 0;
+      color: #cbd5e1;
+    }
+
+    .plan-card button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .profile-section {
+      padding: 60px;
+    }
+
+    .profile-box {
+      background: #111827;
+      padding: 40px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      border: 1px solid #374151;
+    }
+
+    .profile-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #374151;
+    }
+
+    .profile-buttons button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      margin-left: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .edit-btn {
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      color: white;
+    }
+
+    .logout-btn {
+      background: white;
+      color: black;
+    }
+
+    footer {
+      background: #020617;
+      padding: 50px 60px;
+      margin-top: 50px;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+    }
+
+    footer p,
+    footer li {
+      color: #94a3b8;
+      margin-top: 10px;
+      list-style: none;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+      }
+      .hero h1 { font-size: 40px; }
+      .search-section, .notes-container, .upload-section, .subscription-section, .profile-section, footer, .section-title {
+        padding-left: 20px; padding-right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="modal-overlay" id="authModalOverlay">
+    <div class="auth-modal">
+      <button class="close-modal" id="closeModalBtn">&times;</button>
+      <h2 id="modalTitle">Login</h2>
+      <p id="modalSubtitle">Access your StudyShare Pro account</p>
+      
+      <div id="additionalFields"></div>
+      <input type="email" id="authEmail" placeholder="Enter Email Address" required>
+      <input type="password" id="authPassword" placeholder="Enter Password" required>
+      
+      <button class="submit-auth" id="submitAuthBtn">Continue</button>
+    </div>
+  </div>
+
+  <nav>
+    <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">StudyShare Pro</div>
+    <div class="nav-links">
+      <a onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Home</a>
+      <a href="#notesHeading">Notes</a>
+      <a href="#uploadHeading">Upload</a>
+      <a href="#pricingHeading">Subscription</a>
+      <a href="#profileHeading">Profile</a>
+    </div>
+    <div class="nav-buttons">
+      <button class="login-btn" id="navLoginBtn">Login</button>
+      <button class="signup-btn" id="navSignupBtn">Sign Up</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Share Notes & Study Material</h1>
+    <p>Upload notes, PYQs and coding sheets. Help students learn better while collaborating with your peers.</p>
+    <div class="hero-buttons">
+      <button class="primary-btn" id="heroExploreBtn">Explore Notes</button>
+      <button class="secondary-btn" id="heroUploadBtn">Upload Notes</button>
+    </div>
+  </section>
+
+  <section class="search-section">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search notes, subjects, PYQs...">
+      <select id="semSelect">
+        <option value="">Semester</option>
+        <option value="1st Sem">1st Sem</option><option value="2nd Sem">2nd Sem</option><option value="3rd Sem">3rd Sem</option><option value="4th Sem">4th Sem</option>
+        <option value="5th Sem">5th Sem</option><option value="6th Sem">6th Sem</option><option value="7th Sem">7th Sem</option><option value="8th Sem">8th Sem</option>
+      </select>
+      <select id="branchSelect">
+        <option value="">Branch</option>
+        <option value="CSE">CSE</option><option value="IT">IT</option><option value="ECE">ECE</option><option value="ME">ME</option><option value="AIDS">AIDS</option>
+      </select>
+      <button id="searchBtn">Search</button>
+    </div>
+  </section>
+
+  <h2 class="section-title" id="notesHeading">Trending Notes</h2>
+  <section class="notes-container" id="notesContainer"></section>
+
+  <section class="upload-section" id="uploadHeading">
+    <div class="upload-container">
+      <div class="upload-form">
+        <h2>Upload Your Notes</h2>
+        <input type="text" id="noteTitle" placeholder="Enter Note Title" required>
+        <input type="text" id="subjectName" placeholder="Enter Subject Name" required>
+        <div class="file-upload-wrapper">
+          <div class="icon">📁</div>
+          <h4 id="fileStatusLabel">Click to browse or drag file here</h4>
+          <p>Supports only PDF format (Max size: 10MB)</p>
+          <input type="file" id="noteFileSelector" accept=".pdf" required>
+        </div>
+        <button id="uploadBtn" class="submit-upload-btn">Upload Notes</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="subscription-section" id="pricingHeading">
+    <h2 class="section-title">Subscription Plans</h2>
+    <div class="plans">
+      <div class="plan-card">
+        <h2>Basic</h2><div class="price">₹49</div>
+        <ul>
+          <li>Limited Notes Access</li>
+          <li>Basic Downloads</li>
+          <li>Community Support</li>
+        </ul>
+        <button onclick="buyPlanAction('Basic')">Buy Plan</button>
+      </div>
+      <div class="plan-card">
+        <h2>Pro</h2><div class="price">₹99</div>
+        <ul>
+          <li>Unlimited Notes</li>
+          <li>Premium PYQs</li>
+          <li>Priority Support</li>
+        </ul>
+        <button onclick="buyPlanAction('Pro')">Buy Plan</button>
+      </div>
+      <div class="plan-card">
+        <h2>Plus</h2><div class="price">₹199</div>
+        <ul>
+          <li>Advanced Analytics</li>
+          <li>Full Access Pass</li>
+          <li>Top Member Badge</li>
+        </ul>
+        <button onclick="buyPlanAction('Plus')">Buy Plan</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="profile-section" id="profileHeading">
+    <div class="profile-box">
+      <div class="profile-left">
+        <div class="profile-image"></div>
+        <div>
+          <h2 id="profileName">Guest Session</h2>
+          <p id="profileRole">Status: Not Logged In</p>
+          <p id="profileStatusTag">Free Tier Limited Access</p>
+        </div>
+      </div>
+      <div class="profile-buttons">
+        <button class="edit-btn" id="profileEditBtn">Edit Profile</button>
+        <button class="logout-btn" id="profileLogoutBtn">Logout</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-section" id="adminDashboard" style="display: none; padding: 60px; background: #1e293b; border-top: 2px solid #374151; margin-top: 60px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+      <div>
+        <h2 style="font-size: 36px; color: #60a5fa; font-weight: bold;">Control Center: Admin Dashboard</h2>
+        <p style="color: #94a3b8; margin-top: 5px;">Real-time access to examine registered student metrics and subscriptions.</p>
+      </div>
+      <div style="background: linear-gradient(to right, #2563eb, #7c3aed); padding: 15px 25px; border-radius: 15px; text-align: center;">
+        <span style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #cbd5e1;">Total Platform Users</span>
+        <h3 id="totalUsersCount" style="font-size: 32px; font-weight: bold; margin-top: 5px;">0</h3>
+      </div>
+    </div>
+
+    <div style="width: 100%; overflow-x: auto; background: #111827; border-radius: 20px; border: 1px solid #374151;">
+      <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 700px;">
+        <thead>
+          <tr style="background: #1f2937; border-bottom: 2px solid #374151; color: #60a5fa;">
+            <th style="padding: 20px; font-weight: bold;">Student Name</th>
+            <th style="padding: 20px; color:#cbd5e1;">Email Identifier</th>
+            <th style="padding: 20px; font-weight: bold;">Account Tier</th>
+            <th style="padding: 20px; font-weight: bold; text-align: center;">Administrative Action</th>
+          </tr>
+        </thead>
+        <tbody id="adminUserTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div>
+        <h2>StudyShare Pro</h2>
+        <p>Student platform to upload and access quality notes and study material.</p>
+      </div>
+      <div>
+        <h2>Quick Links</h2>
+        <ul>
+          <li style="cursor:pointer; margin-top: 10px;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Home</li>
+          <li style="cursor:pointer; margin-top: 10px;" onclick="document.getElementById('notesHeading').scrollIntoView()">Notes</li>
+          <li style="cursor:pointer; margin-top: 10px;" onclick="document.getElementById('uploadHeading').scrollIntoView()">Upload</li>
+          <li style="cursor:pointer; margin-top: 10px;" onclick="document.getElementById('pricingHeading').scrollIntoView()">Subscription</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <p>support@studyshare.com</p>
+        <p>Madhya Pradesh, India</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const API_URL = "http://localhost:5000/api/notes";
+    const ADMIN_API_URL = "http://localhost:5000/api/admin/users";
+    
+    const notesContainer = document.getElementById("notesContainer");
+    const authOverlay = document.getElementById("authModalOverlay");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalSubtitle = document.getElementById("modalSubtitle");
+    const additionalFields = document.getElementById("additionalFields");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const fileSelector = document.getElementById("noteFileSelector");
+    const fileStatusLabel = document.getElementById("fileStatusLabel");
+    const adminDashboard = document.getElementById("adminDashboard");
+
+    // Nav Scrolling
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if(targetId && targetId.startsWith('#')) {
+          e.preventDefault();
+          const targetSection = document.querySelector(targetId);
+          if(targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    fileSelector.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        fileStatusLabel.innerHTML = `✅ Selected: <span style="color: #60a5fa">${file.name}</span>`;
+      }
+    });
+
+    document.getElementById("heroExploreBtn").addEventListener("click", () => document.getElementById("notesHeading").scrollIntoView({ behavior: "smooth" }));
+    document.getElementById("heroUploadBtn").addEventListener("click", () => document.getElementById("uploadHeading").scrollIntoView({ behavior: "smooth" }));
+
+    // Modal Triggers
+    document.getElementById("navLoginBtn").addEventListener("click", () => {
+      modalTitle.innerText = "Login";
+      additionalFields.innerHTML = ""; 
+      authOverlay.classList.add("active");
+    });
+
+    document.getElementById("navSignupBtn").addEventListener("click", () => {
+      modalTitle.innerText = "Create Account";
+      additionalFields.innerHTML = '<input type="text" id="authName" placeholder="Enter Your Full Name" required>';
+      authOverlay.classList.add("active");
+    });
+
+    closeModalBtn.addEventListener("click", () => authOverlay.classList.remove("active"));
+
+    // --- CONNECTING DYNAMIC API FOR LOGIN & SIGNUP ---
+    document.getElementById("submitAuthBtn").addEventListener("click", async () => {
+      const email = document.getElementById("authEmail").value;
+      const password = document.getElementById("authPassword").value;
+      
+      if(!email || !password) { alert("Sari fields bharo!"); return; }
+
+      if(modalTitle.innerText === "Login") {
+        try {
+          const res = await fetch("http://localhost:5000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await res.json();
+          if(data.success) {
+            document.getElementById("profileName").innerText = data.user.name;
+            document.getElementById("profileRole").innerText = "Status: CSE Verified Member";
+            document.getElementById("profileStatusTag").innerText = "Active: " + (data.user.planStatus || "Free Tier");
+            
+            localStorage.setItem("userToken", data.token || "dummy-logged-in-token");
+            localStorage.setItem("userName", data.user.name);
+
+            if(data.user.role === "admin" || email === "admin@gmail.com") { 
+              adminDashboard.style.display = "block";
+              loadAdminDashboardData();
+            } else {
+              adminDashboard.style.display = "none";
+            }
+
+            alert("🎉 Welcome back, Login Successful!");
+            authOverlay.classList.remove("active");
+          } else { alert("❌ Error: " + data.error); }
+        } catch(e) { alert("Server offline!"); }
+
+      } else {
+        const name = document.getElementById("authName").value;
+        if(!name) { alert("Naam dalo!"); return; }
+
+        try {
+          const res = await fetch("http://localhost:5000/api/auth/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password })
+          });
+          const data = await res.json();
+          if(data.success) {
+            alert("🚀 Account successfully committed to MongoDB! Ab Login karein.");
+            modalTitle.innerText = "Login";
+            additionalFields.innerHTML = "";
+          } else { alert("❌ " + data.error); }
+        } catch(e) { alert("Server offline!"); }
+      }
+    });
+
+    function buyPlanAction(planName) { 
+      alert(`💳 Payment Gateway Gateway: [${planName} Tier]\n\nComing Soon: We are presently scaling our systems. This operational subscription portal will be live in the next release update!`); 
+    }
+    
+    document.getElementById("profileLogoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userName");
+      document.getElementById("profileName").innerText = "Guest Session";
+      document.getElementById("profileRole").innerText = "Status: Not Logged In";
+      document.getElementById("profileStatusTag").innerText = "Free Tier Limited Access";
+      adminDashboard.style.display = "none"; 
+      alert("Logged out successfully!");
+    });
+
+    // Profile Alert in standard English
+    document.getElementById("profileEditBtn").addEventListener("click", () => {
+      const token = localStorage.getItem("userToken");
+      if(!token) {
+        alert("❌ Profile modification restricted! Please log in first. Guest account details cannot be updated.");
+        modalTitle.innerText = "Login";
+        additionalFields.innerHTML = ""; 
+        authOverlay.classList.add("active");
+      } else {
+        alert("⚙️ Profile Control Panel\n\nFeature Coming Soon: Dynamic dashboard update pipeline changes will be deployed in the next update framework.");
+      }
+    });
+
+    // --- NOTES API CODE ---
+    async function fetchNotes(searchQuery = "", semester = "", branch = "", isSearchTriggered = false) {
+      try {
+        const params = new URLSearchParams();
+        if (searchQuery.trim()) params.append("search", searchQuery.trim());
+        if (semester) params.append("semester", semester);
+        if (branch) params.append("branch", branch);
+
+        const url = params.toString() ? `${API_URL}?${params.toString()}` : API_URL;
+
+        const response = await fetch(url);
+        const data = await response.json();
+        notesContainer.innerHTML = ""; 
+        
+        if(!data || data.length === 0) { 
+          if (isSearchTriggered) {
+            notesContainer.innerHTML = `
+              <div style='grid-column:1/-1; text-align:center; padding: 40px; background: #111827; border-radius:15px; border: 1px dashed #374151;'>
+                <span style='font-size: 40px;'>🔍</span>
+                <h3 style='margin-top: 10px; color: #60a5fa;'>No notes found!</h3>
+                <p style='color: #94a3b8; font-size: 14px; margin-top: 5px;'>No PDFs match your current filters. Please try searching with a different keyword.</p>
+              </div>`; 
+          } else {
+            notesContainer.innerHTML = `
+              <div style='grid-column:1/-1; text-align:center; padding: 40px; color: #94a3b8;'>
+                <p>Welcome to StudyShare Pro! Use the search filters above to explore available materials.</p>
+              </div>`;
+          }
+          return; 
+        }
+
+        data.forEach(note => {
+          const card = document.createElement("div");
+          card.classList.add("note-card");
+          card.innerHTML = `
+            <div class="pdf-preview"><span>📄 PDF Loaded</span><span class="file-meta-text">${note.semester || 'All'} | ${note.branch || 'Gen'}</span></div>
+            <h3>${note.title}</h3><p>Subject: ${note.description}</p>
+            <div class="card-buttons">
+              <button class="view-btn" onclick="alert('Viewing: ${note.title} PDF Setup')">View PDF</button>
+              <button class="delete-btn" onclick="deleteNote('${note._id}')">Delete</button>
+            </div>`;
+          notesContainer.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Notes execution framework failed:", error);
+      }
+    }
+
+    document.getElementById("searchBtn").addEventListener("click", () => {
+      const query = document.getElementById("searchInput").value;
+      const sem = document.getElementById("semSelect").value;
+      const branch = document.getElementById("branchSelect").value;
+      fetchNotes(query, sem, branch, true);
+    });
+
+    document.getElementById("uploadBtn").addEventListener("click", async () => {
+      const titleInput = document.getElementById("noteTitle");
+      const subjectInput = document.getElementById("subjectName");
+      const chosenFile = fileSelector.files[0];
+      if (!titleInput.value || !subjectInput.value || !chosenFile) { alert("Sari form details bharo!"); return; }
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            title: titleInput.value, 
+            description: subjectInput.value, 
+            fileName: chosenFile.name,
+            semester: document.getElementById("semSelect").value || "General",
+            branch: document.getElementById("branchSelect").value || "CSE"
+          })
+        });
+        if (response.ok) { 
+          titleInput.value = ""; 
+          subjectInput.value = ""; 
+          fileStatusLabel.innerText = "Click to browse or drag file here";
+          fetchNotes(document.getElementById("searchInput").value, document.getElementById("semSelect").value, document.getElementById("branchSelect").value, false); 
+          alert("🎉 Document Saved!"); 
+        }
+      } catch (error) {}
+    });
+
+    async function deleteNote(id) {
+      if(!confirm("Are you sure you want to delete this note?")) return;
+      try { 
+        const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" }); 
+        if(response.ok) fetchNotes(document.getElementById("searchInput").value, document.getElementById("semSelect").value, document.getElementById("branchSelect").value, false); 
+      } catch (err) {}
+    }
+
+    // --- ADMIN SYSTEM DATA SYNC ---
+    async function loadAdminDashboardData() {
+      const tableBody = document.getElementById("adminUserTableBody");
+      const totalCountLabel = document.getElementById("totalUsersCount");
+      try {
+        const response = await fetch(ADMIN_API_URL);
+        const users = await response.json();
+        tableBody.innerHTML = ""; 
+        totalCountLabel.innerText = users.length;
+
+        if(users.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="4" style="padding:40px; text-align:center; color:#94a3b8;">⚠️ No registered users. Try signing up a new account!</td></tr>`;
+          return;
+        }
+
+        users.forEach(user => {
+          const row = document.createElement("tr");
+          row.style.borderBottom = "1px solid #374151";
+          let bColor = "#94a3b8"; 
+          if(user.planStatus === "Plus") bColor = "#a855f7";
+          if(user.planStatus === "Pro") bColor = "#3b82f6";
+          if(user.planStatus === "Basic") bColor = "#eab308";
+
+          row.innerHTML = `
+            <td style="padding: 20px; font-weight: bold;">${user.name}</td>
+            <td style="padding: 20px; color:#cbd5e1;">${user.email}</td>
+            <td style="padding: 20px;">
+              <span style="background:${bColor}22; color:${bColor}; padding:6px 14px; border-radius:20px; border:1px solid ${bColor}44; font-size:13px; font-weight:bold;">
+                📁 ${user.planStatus || 'Basic'}
+              </span>
+            </td>
+            <td style="padding: 20px; text-align: center;">
+              <button onclick="banUser('${user._id}', '${user.name}')" style="background:#ef444411; color:#ef4444; border:1px solid #ef444433; padding:8px 16px; border-radius:8px; cursor:pointer;">
+                Ban User
+              </button>
+            </td>`;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {}
+    }
+
+    async function banUser(id, name) {
+      if(!confirm(`Ban ${name}?`)) return;
+      try { const response = await fetch(`${ADMIN_API_URL}/${id}`, { method: "DELETE" }); if(response.ok) loadAdminDashboardData(); } catch (err) {}
+    }
+
+    window.onload = function() { 
+      fetchNotes("", "", "", false); 
+      const savedName = localStorage.getItem("userName");
+      const token = localStorage.getItem("userToken");
+      if(token && savedName) {
+        document.getElementById("profileName").innerText = savedName;
+        document.getElementById("profileRole").innerText = "Status: CSE Verified Member";
+        document.getElementById("profileStatusTag").innerText = "Active: Free Tier";
+      }
+    }
+  </script>
+</body>
+</html>
