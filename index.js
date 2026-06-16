@@ -11,13 +11,13 @@ app.use(express.json());
 // Temporary memory OTP store karne ke liye (Real verification pipeline)
 const otpCache = new Map();
 
-// 🔌 STEP 1: MONGODB DATABASE CONNECTION
+//  STEP 1: MONGODB DATABASE CONNECTION
 mongoose.connect('mongodb://localhost:27017/studyshare')
-  .then(() => console.log('🚀 Local MongoDB successfully connected!'))
+  .then(() => console.log(' Local MongoDB successfully connected!'))
   .catch((err) => console.error('Database connection crash error:', err));
 
 
-// 📂 STEP 2: DATABASE MODELS (SCHEMAS)
+//  STEP 2: DATABASE MODELS (SCHEMAS)
 const NoteSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('User', UserSchema);
 
 
-// 🔐 STEP 3: AUTHENTICATION PIPELINE (DIRECT & OTP SUPPORTED)
+// STEP 3: AUTHENTICATION PIPELINE (DIRECT & OTP SUPPORTED)
 
 // A. Direct Signup Route (Sync with Frontend Form Actions)
 app.post('/api/auth/signup', async (req, res) => {
@@ -81,8 +81,8 @@ app.post('/api/auth/send-otp', async (req, res) => {
     otpCache.set(email, generatedOtp);
     
     console.log(`=========================================`);
-    console.log(`🔒 SYSTEM OTP GENERATED FOR: ${email}`);
-    console.log(`🔑 CODE: ${generatedOtp}`);
+    console.log(` SYSTEM OTP GENERATED FOR: ${email}`);
+    console.log(` CODE: ${generatedOtp}`);
     console.log(`=========================================`);
 
     res.json({ success: true, message: "Verification OTP generated inside server terminal!" });
@@ -233,7 +233,7 @@ app.get('/api/admin/seed-users', async (req, res) => {
       { title: "Operating Systems", description: "Process Management and Deadlocks", semester: "4th Sem", branch: "CSE", fileName: "os.pdf" }
     ]);
 
-    res.send("🎉 Test Database cleared and updated with fresh structured data!");
+    res.send(" Test Database cleared and updated with fresh structured data!");
   } catch (err) {
     res.status(500).send("Seeding failed: " + err.message);
   }
@@ -258,10 +258,10 @@ app.delete('/api/admin/users/:id', async (req, res) => {
 });
 
 
-// ⚡ STEP 7: RUN SERVER
+//  STEP 7: RUN SERVER
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`=================================================`);
-  console.log(`🔥 SERVER RUNNING SUCCESSFULLY ON PORT: ${PORT}   `);
+  console.log(` SERVER RUNNING SUCCESSFULLY ON PORT: ${PORT}   `);
   console.log(`=================================================`);
 });
